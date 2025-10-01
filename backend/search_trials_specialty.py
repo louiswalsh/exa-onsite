@@ -1,21 +1,16 @@
 import json
-import logging
 from datetime import datetime, timedelta
-
-logger = logging.getLogger(__name__)
 
 
 def search_trials_by_specialty(exa, specialty: str):
     if not exa:
         raise ValueError("Exa client not configured")
 
-    # Validate specialty
     valid_specialties = ['oncology', 'hematology', 'radiology', 'cardiology', 'neurology']
     spec = (specialty or '').lower()
     if spec not in valid_specialties:
         raise ValueError(f"Invalid specialty. Must be one of: {', '.join(valid_specialties)}")
 
-    # Keep query simple and generic for better hit rate (avoid strict quoting)
     specialty_queries = {
         'oncology': 'oncology clinical trials phase II phase III enrollment outcomes biomarkers',
         'hematology': 'hematology clinical trials phase II phase III enrollment outcomes biomarkers',
@@ -26,11 +21,9 @@ def search_trials_by_specialty(exa, specialty: str):
 
     query = specialty_queries[spec]
 
-    # Two-year window
     two_years = datetime.now() - timedelta(days=730)
     start_date = two_years.strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
-    # Simple schema to extract structured data
     trial_schema = {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -87,25 +80,11 @@ def search_trials_by_specialty(exa, specialty: str):
                 "type": "string",
                 "description": "Answer in exactly one sentence: As a research center with substantial funding in Los Angeles (Kaiser Permanente SoCal), should we run or join this trial? If recruitment_status is not recruiting/enrolling or enrollment_achieved >= enrollment_target, answer 'No, because' and state it is completed/fully enrolled/not recruiting. Otherwise begin with 'Yes, because' or 'No, because' and justify using concrete signals (recruitment feasibility vs targets, geographic fit with SoCal, differentiation vs similar trials/endpoints, underserved populations). If evidence is insufficient, answer 'Insufficient evidence.' Keep under 25 words."
             },
-            # "recruitment_signal": {
-            #     "type": "string",
-            #     "description": "Classify recruitment performance as one of: strong, moderate, weak, or failed."
-            # }
         },
     }
 
-    # Disable domain restriction to improve recall; can be re-enabled if needed
     include_domains = None
 
-    # Execute search
-    logger.info(
-        "Exa search: spec=%s query=\"%s\" start_date=%s domains=%s",
-        spec,
-        query,
-        start_date,
-        include_domains if include_domains else "ALL",
-    )
-    # Build args without include_domains if not set to avoid accidental filtering
     exa_kwargs = {
         'type': 'neural',
         'num_results': 50,
@@ -120,14 +99,6 @@ def search_trials_by_specialty(exa, specialty: str):
         query,
         **exa_kwargs,
     )
-    try:
-        count = len(getattr(results, 'results', []) or [])
-        sample = [r.url for r in (getattr(results, 'results', []) or [])[:5]]
-        logger.info("Exa returned %d results; sample URLs: %s", count, sample)
-    except Exception as e:
-        logger.warning("Could not log Exa results summary: %s", e)
-
-    # Transform results to API response
     trials = []
     for result in results.results:
         item = {
@@ -159,17 +130,11 @@ def search_trials_by_specialty(exa, specialty: str):
                 item['site'] = structured.get('site', '')
                 item['recruitmentStatus'] = structured.get('recruitment_status', '')
                 item['biomarkers'] = structured.get('biomarkers', '')
-                # New fields informed by PRD / mocks
                 item['summary'] = structured.get('summary', '')
-                # Prefer 'insight'; fallback to 'implication' if model returns legacy field name
                 item['insight'] = structured.get('insight') or structured.get('implication', '')
-
-                # Normalize status and compute derived recruitment signal if needed
                 rstatus_raw = structured.get('recruitment_status') or ''
                 rstatus = rstatus_raw.strip().lower()
                 rs = (structured.get('recruitment_signal') or '').strip().lower()
-
-                # Derive recruitmentSignal if the model didn't provide it
                 if rs in {'strong','moderate','weak','failed'}:
                     item['recruitmentSignal'] = rs
                 else:
@@ -182,8 +147,6 @@ def search_trials_by_specialty(exa, specialty: str):
                         item['recruitmentSignal'] = 'moderate'
                     elif pct > 0:
                         item['recruitmentSignal'] = 'weak'
-
-                # Guardrail: if trial is not recruiting or fully enrolled/completed, recommend 'No'
                 non_recruiting = {
                     'completed', 'terminated', 'withdrawn', 'suspended', 'enrollment complete',
                     'enrolment complete', 'active, not recruiting', 'closed to accrual',
@@ -191,7 +154,6 @@ def search_trials_by_specialty(exa, specialty: str):
                 }
                 full_enrollment = bool(tgt) and bool(ach) and tgt > 0 and ach >= tgt
                 if full_enrollment or rstatus in non_recruiting:
-                    # Keep within 25 words per schema guidance
                     reason_parts = []
                     if rstatus:
                         reason_parts.append(rstatus_raw)
@@ -199,8 +161,8 @@ def search_trials_by_specialty(exa, specialty: str):
                         reason_parts.append('fully enrolled')
                     reason = ' and '.join(reason_parts) if reason_parts else 'not recruiting'
                     item['insight'] = f"No, because the trial is {reason}."
-            except Exception as e:
-                logger.warning("Could not parse structured data: %s", e)
+            except Exception:
+                pass
 
         trials.append(item)
 
