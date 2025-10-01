@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      FLASK_ENV: development
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+    command: python app.py
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8081:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ng serve --host 0.0.0.0 --port 4200

@@ -1,0 +1,100 @@
+############################################
+# Environment and secrets
+############################################
+# Any .env-style files anywhere in the repo
+**/.env
+**/.env.*
+# direnv
+.envrc
+
+############################################
+# Node / Angular
+############################################
+# Dependencies and debug logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Angular build/cache outputs
+frontend/dist/
+frontend/.angular/
+# In case any nested dist folders appear, ignore them too
+**/dist/
+# Common frontend caches
+.eslintcache
+.parcel-cache
+.cache/
+
+############################################
+# Python (Flask backend)
+############################################
+# Byte-compiled / cache
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments (anywhere)
+.Python
+**/.venv/
+**/venv/
+**/env/
+
+# Test and type caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+
+# Packaging metadata
+*.egg-info/
+
+############################################
+# IDE / Editor
+############################################
+**/.vscode/
+.idea/
+*.swp
+*.swo
+.history/
+
+############################################
+# OS files
+############################################
+.DS_Store
+Thumbs.db
+
+############################################
+# Logs
+############################################
+*.log
+logs/
+
+############################################
+# Docker
+############################################
+.docker/
+docker-compose.override.yml
+
+############################################
+# Coverage / reports
+############################################
+coverage/
+.coverage
+.coverage.*
+htmlcov/
+.nyc_output
+coverage.xml
+lcov.info
+
+############################################
+# Project-specific misc
+############################################
+# Claude/AI local working files
+.claude/
+
+# Ignore env files in backend explicitly (already covered by **/.env)
+backend/.env

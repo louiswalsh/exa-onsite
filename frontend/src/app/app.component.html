@@ -1,0 +1,80 @@
+<div class="news-monitor">
+  <header class="header">
+    <div class="header-content">
+      <div class="title-wrap">
+        <h1 class="title">{{ title }}</h1>
+        <div class="subtitle">User Profile: Kaiser Permanente</div>
+      </div>
+      <div class="header-right">
+        <button class="refresh-button" (click)="refreshAll()">Refresh</button>
+        <div class="health-indicator" [class.ok]="healthStatus === 'healthy'" [class.bad]="healthStatus === 'unhealthy'">
+          <span class="dot"></span>
+          <span class="label">
+            {{ healthStatus === 'checking' ? 'Checking…' : (healthStatus === 'healthy' ? 'API Healthy' : 'API Unreachable') }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-tabs">
+    <div class="tabs-container">
+      <button
+        *ngFor="let tab of tabs"
+        [class]="'tab-button ' + (activeTab === tab ? 'active' : '')"
+        (click)="selectTab(tab)">
+        {{ tab }}
+      </button>
+    </div>
+  </nav>
+
+  <main class="articles-container">
+    <div *ngIf="loading" class="loading-state">
+      <p>Loading trials...</p>
+    </div>
+
+    <div *ngIf="devMode" class="dev-mode-indicator">
+      <span>Dev Mode: Using mock data</span>
+    </div>
+
+    <ng-container *ngIf="!loading">
+    <article *ngFor="let trial of filteredTrials" class="article-card">
+      <div class="article-content">
+        <div class="trial-header">
+          <span class="nct-id">{{ trial.nctId }}</span>
+          <span class="trial-status">Status: {{ trial.status | titlecase }}</span>
+        </div>
+        <h2 class="article-title">{{ trial.title }}</h2>
+        <p class="article-description">{{ trial.summary }}</p>
+
+        <div class="trial-metrics">
+          <div class="metric">
+            <span class="metric-label">Enrollment:</span>
+            <span class="metric-value">{{ trial.enrollment.achieved }}/{{ trial.enrollment.target }} ({{ trial.enrollment.percentage }}%)</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Phase:</span>
+            <span class="metric-value">{{ trial.phase }}</span>
+          </div>
+        </div>
+
+        <div class="trial-implication" *ngIf="trial.implication">
+          <strong>KP SoCal Recommendation:</strong> {{ trial.implication }}
+        </div>
+
+        <div class="article-meta">
+          <span class="source-icon">{{ getSpecialtyText(trial.specialty) }}</span>
+          <span class="author">{{ trial.sponsor }}</span>
+          <span class="separator">•</span>
+          <span class="time-ago">{{ getTimeAgo(trial.lastUpdated) }}</span>
+        </div>
+      </div>
+    </article>
+    </ng-container>
+
+    <div *ngIf="!loading && filteredTrials.length === 0" class="empty-state">
+      <p>No trials found for {{ activeTab }}. Try selecting a different specialty.</p>
+    </div>
+  </main>
+
+</div>
