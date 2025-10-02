@@ -3,7 +3,7 @@
     <div class="header-content">
       <div class="title-wrap">
         <h1 class="title">{{ title }}</h1>
-        <div class="subtitle">User Profile: {{redacted}}</div>
+        <div class="subtitle">User Profile: [redacted]</div>
       </div>
       <div class="header-right">
         <button class="refresh-button" (click)="refreshAll()">Refresh</button>
@@ -55,7 +55,7 @@
         </div>
 
         <div class="trial-implication" *ngIf="trial.implication">
-          <strong>{{redacted}} Recommendation:</strong> {{ trial.implication }}
+          <strong>[redacted] Recommendation:</strong> {{ trial.implication }}
         </div>
 
         <div class="article-meta">
