@@ -1,7 +1,7 @@
 # PRD: Clinical Trial Monitor (Search-Based)
 
 ## 1. Problem Statement  
-Healthcare research centers (for this example we are going to take the user role of Kaiser Permanente) struggle with trial decision-making:  
+Healthcare research centers (for this example we are going to take the user role of {{redacted}}) struggle with trial decision-making:  
 - **Trial Choice:** ClinicalTrials.gov lists trials but doesn’t show trends, gaps, or performance.  
 - **Recruitment Feasibility:** Many trials fail due to poor site selection and low enrollment.  
 - **Trial Design:** Protocols often miss fundable endpoints or differentiation opportunities.  
@@ -43,7 +43,7 @@ Deliver a search-based, specialty-focused dashboard that provides a real-time, s
 - **Sponsor:** NIH + MD Anderson (Houston, TX)  
 - **Summary:** “Phase II immunotherapy combo; 400 patients fully enrolled and completed in 2024.”  
 - **Recruitment Signal:** Very strong performance at large academic centers in TX and NY.  
-- **Implication for KP SoCal:** Space is saturated — duplicating this trial design in SoCal would not be differentiated or fundable.  
+- **Implication for {{redacted}}:** Space is saturated — duplicating this trial design in SoCal would not be differentiated or fundable.  
 
 ---
 
@@ -51,7 +51,7 @@ Deliver a search-based, specialty-focused dashboard that provides a real-time, s
 - **Sponsor:** Midwest Community Hospital Consortium  
 - **Summary:** “HER2-negative breast cancer trial; only 60/150 patients recruited, trial closed early.”  
 - **Recruitment Signal:** Community hospitals struggled to hit targets.  
-- **Implication for KP SoCal:** With KP’s large and diverse patient pool, SoCal could succeed in HER2-negative recruitment where smaller centers failed — strong opportunity if endpoints are differentiated.  
+- **Implication for {{redacted}}:** With {{redacted}}'s large and diverse patient pool, SoCal could succeed in HER2-negative recruitment where smaller centers failed — strong opportunity if endpoints are differentiated.  
 
 ---
 
@@ -59,7 +59,7 @@ Deliver a search-based, specialty-focused dashboard that provides a real-time, s
 - **Sponsor:** European Consortium (Spain & Italy)  
 - **Summary:** “Biomarker-driven Phase II; currently recruiting only in Europe.”  
 - **Recruitment Signal:** No U.S. or Latin America coverage.  
-- **Implication for KP SoCal:** White space opportunity. KP could run the first biomarker-driven breast cancer trial in SoCal’s Latino population — highly fundable and strategically unique.  
+- **Implication for {{redacted}}:** White space opportunity. {{redacted}} could run the first biomarker-driven breast cancer trial in SoCal's Latino population — highly fundable and strategically unique.  
 
 
 ---
@@ -88,7 +88,7 @@ Deliver a search-based, specialty-focused dashboard that provides a real-time, s
 ---
 
 ## 9. Demo Narrative  
-*"Here’s a specialty-focused trial monitor for Kaiser Permanente. On load, it pulls Oncology and shows a green API health indicator. Switching tabs instantly swaps cached results; Refresh clears and refetches. With Exa-powered search, they see which trials are running, where recruitment is strong or weak, and how to differentiate designs. This turns 40+ hours of manual searching into a daily live signal that saves money and drives better science."*  
+*"Here's a specialty-focused trial monitor for {{redacted}}. On load, it pulls Oncology and shows a green API health indicator. Switching tabs instantly swaps cached results; Refresh clears and refetches. With Exa-powered search, they see which trials are running, where recruitment is strong or weak, and how to differentiate designs. This turns 40+ hours of manual searching into a daily live signal that saves money and drives better science."*  
 
 ---
 

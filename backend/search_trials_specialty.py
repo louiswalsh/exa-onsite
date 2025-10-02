@@ -78,7 +78,7 @@ def search_trials_by_specialty(exa, specialty: str):
             },
             "insight": {
                 "type": "string",
-                "description": "Answer in exactly one sentence: As a research center with substantial funding in Los Angeles (Kaiser Permanente SoCal), should we run or join this trial? If recruitment_status is not recruiting/enrolling or enrollment_achieved >= enrollment_target, answer 'No, because' and state it is completed/fully enrolled/not recruiting. Otherwise begin with 'Yes, because' or 'No, because' and justify using concrete signals (recruitment feasibility vs targets, geographic fit with SoCal, differentiation vs similar trials/endpoints, underserved populations). If evidence is insufficient, answer 'Insufficient evidence.' Keep under 25 words."
+                "description": "Answer in exactly one sentence: As a research center with substantial funding in Los Angeles ({{redacted}}), should we run or join this trial? If recruitment_status is not recruiting/enrolling or enrollment_achieved >= enrollment_target, answer 'No, because' and state it is completed/fully enrolled/not recruiting. Otherwise begin with 'Yes, because' or 'No, because' and justify using concrete signals (recruitment feasibility vs targets, geographic fit with SoCal, differentiation vs similar trials/endpoints, underserved populations). If evidence is insufficient, answer 'Insufficient evidence.' Keep under 25 words."
             },
         },
     }
