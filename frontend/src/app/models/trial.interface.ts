@@ -22,7 +22,6 @@ export interface Trial {
     name: string;
     institution: string;
   };
-  recruitmentSignal: 'strong' | 'moderate' | 'weak' | 'failed';
   implication: string;
   summary: string;
   specialty: 'oncology' | 'hematology' | 'radiology' | 'cardiology' | 'neurology';

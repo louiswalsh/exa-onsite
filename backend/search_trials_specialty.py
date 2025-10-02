@@ -83,10 +83,17 @@ def search_trials_by_specialty(exa, specialty: str):
         },
     }
 
-    include_domains = None
+    include_domains = [
+        'clinicaltrials.gov',
+        'pubmed.ncbi.nlm.nih.gov',
+        'nejm.org',
+        'nature.com',
+        'thelancet.com',
+        'bmj.com'
+    ]
 
     exa_kwargs = {
-        'type': 'neural',
+        'type': 'auto',
         'num_results': 50,
         'start_published_date': start_date,
         'summary': {"schema": trial_schema},
@@ -134,19 +141,6 @@ def search_trials_by_specialty(exa, specialty: str):
                 item['insight'] = structured.get('insight') or structured.get('implication', '')
                 rstatus_raw = structured.get('recruitment_status') or ''
                 rstatus = rstatus_raw.strip().lower()
-                rs = (structured.get('recruitment_signal') or '').strip().lower()
-                if rs in {'strong','moderate','weak','failed'}:
-                    item['recruitmentSignal'] = rs
-                else:
-                    full_enrollment = bool(tgt) and bool(ach) and tgt > 0 and ach >= tgt
-                    if rstatus in {'terminated','withdrawn','suspended'}:
-                        item['recruitmentSignal'] = 'failed'
-                    elif full_enrollment or pct >= 85:
-                        item['recruitmentSignal'] = 'strong'
-                    elif pct >= 50:
-                        item['recruitmentSignal'] = 'moderate'
-                    elif pct > 0:
-                        item['recruitmentSignal'] = 'weak'
                 non_recruiting = {
                     'completed', 'terminated', 'withdrawn', 'suspended', 'enrollment complete',
                     'enrolment complete', 'active, not recruiting', 'closed to accrual',

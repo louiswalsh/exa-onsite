@@ -33,10 +33,6 @@
       <p>Loading trials...</p>
     </div>
 
-    <div *ngIf="devMode" class="dev-mode-indicator">
-      <span>Dev Mode: Using mock data</span>
-    </div>
-
     <ng-container *ngIf="!loading">
     <article *ngFor="let trial of filteredTrials" class="article-card">
       <div class="article-content">

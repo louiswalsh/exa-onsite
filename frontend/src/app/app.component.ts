@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
   trials: Trial[] = [];
   filteredTrials: Trial[] = [];
   loading = false;
-  devMode = false;
   healthStatus: 'checking' | 'healthy' | 'unhealthy' = 'checking';
   private cache: Record<string, Trial[]> = {};
 
@@ -27,7 +26,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.devMode = this.environmentService.isDevMode();
     this.activeTab = 'Hematology';
     this.loadTrialsForActiveTab();
     this.checkHealth();
@@ -94,32 +92,6 @@ export class AppComponent implements OnInit {
         const diffInMonths = Math.floor(diffInDays / 30);
         return `${diffInMonths} month${diffInMonths === 1 ? '' : 's'} ago`;
       }
-    }
-  }
-
-  getCurrentTime(): string {
-    const now = new Date();
-    return now.toTimeString().slice(0, 8);
-  }
-
-  getStatusColor(status: string): string {
-    switch (status) {
-      case 'recruiting': return '#4285f4';
-      case 'active': return '#34a853';
-      case 'completed': return '#9aa0a6';
-      case 'terminated': return '#ea4335';
-      case 'suspended': return '#fbbc04';
-      default: return '#9aa0a6';
-    }
-  }
-
-  getRecruitmentSignalText(signal: string): string {
-    switch (signal) {
-      case 'strong': return 'Strong';
-      case 'moderate': return 'Moderate';
-      case 'weak': return 'Weak';
-      case 'failed': return 'Failed';
-      default: return 'Unknown';
     }
   }
 
